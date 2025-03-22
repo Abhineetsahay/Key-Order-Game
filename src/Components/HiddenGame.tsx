@@ -4,14 +4,17 @@ import { HiddenStructure } from "../utils/HiddenStructure";
 const HiddenGame = () => {
   const [selectedOrder, setSelectedOrder] = useState<string[]>([]);
   const [shuffledOrder, setShuffledOrder] = useState<string[]>([]);
+
+  const [isUserWon, setIsUserWon] = useState<boolean>(false);
   const [finalMessage, setFinalMessage] = useState<string>("");
+  const [Password, setPassword] = useState<string>("");
 
   const shouldWarnRef = useRef<boolean>(true);
 
   const handleSelect = (tag: string) => {
     if (selectedOrder.length < HiddenStructure.length) {
       const newOrder = [...selectedOrder, tag];
-      setSelectedOrder(newOrder); 
+      setSelectedOrder(newOrder);
 
       if (newOrder.length === HiddenStructure.length) {
         checkOrder(newOrder);
@@ -21,6 +24,8 @@ const HiddenGame = () => {
 
   const checkOrder = (order: string[]) => {
     if (JSON.stringify(order) === JSON.stringify(HiddenStructure)) {
+      setIsUserWon(true);
+      setPassword("12345");
       setFinalMessage("✅ Correct Order! Well done!");
     } else {
       setFinalMessage("❌ Wrong Order! Try Again.");
@@ -51,7 +56,9 @@ const HiddenGame = () => {
   return (
     <div className="h-screen w-screen bg-gray-900 flex flex-col items-center justify-center text-white">
       <div className="text-center">
-        <h1 className="text-3xl font-bold mb-2">Welcome to the Key-Order-Game</h1>
+        <h1 className="text-3xl font-bold mb-2">
+          Welcome to the Key-Order-Game
+        </h1>
         <p className="max-w-lg text-gray-300">
           There is a hidden string inside the body element. Your goal is to
           discover the correct path to reveal the text:{" "}
@@ -98,12 +105,19 @@ const HiddenGame = () => {
       ) : (
         <>
           <div className="mt-6 text-2xl font-bold">{finalMessage}</div>
-          <button
-            onClick={handleRetry}
-            className="mt-4 p-3 px-6 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700"
-          >
-            Retry
-          </button>
+          {isUserWon ? (
+            <p className="mt-4 text-lg font-semibold text-green-400">
+              🎉 Congratulations! You win! The passkey for the next round is:{" "}
+              <span className="font-bold text-white">{Password}</span>
+            </p>
+          ) : (
+            <button
+              onClick={handleRetry}
+              className="mt-4 p-3 px-6 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700"
+            >
+              Retry
+            </button>
+          )}
         </>
       )}
     </div>
