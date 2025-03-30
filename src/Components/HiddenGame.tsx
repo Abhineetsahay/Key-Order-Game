@@ -25,7 +25,7 @@ const HiddenGame = () => {
   const checkOrder = (order: string[]) => {
     if (JSON.stringify(order) === JSON.stringify(HiddenStructure)) {
       setIsUserWon(true);
-      setPassword("12345");
+      setPassword("8Fm41bnK");
       setFinalMessage("✅ Correct Order! Well done!");
     } else {
       setFinalMessage("❌ Wrong Order! Try Again.");
